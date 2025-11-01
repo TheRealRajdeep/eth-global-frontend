@@ -1,6 +1,7 @@
 import { useState } from "react";
 
-const USER_API_BASE_URL = "http://localhost:3000";
+const USER_API_BASE_URL =
+  "https://vaultguard-backend-production-4316.up.railway.app";
 
 export const useUserAPI = () => {
   const [isCreatingUser, setIsCreatingUser] = useState(false);

@@ -3,7 +3,8 @@ import AddFriendForm from "./AddFriendForm";
 import { Loader2, AlertCircle, CloudCog, Plus } from "lucide-react";
 import { Button } from "./ui/button";
 import { useFriendsAPI } from "../hooks/useFriendsAPI";
-const API_BASE_URL = "http://localhost:3000";
+const API_BASE_URL =
+  "https://vaultguard-backend-production-4316.up.railway.app";
 const FriendsList = ({ isConnected = false }) => {
   // Friends API integration
   // const {

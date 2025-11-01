@@ -13,7 +13,8 @@ import {
 import { Plus, UserPlus, Mail, Wallet, Loader2 } from "lucide-react";
 import { ethers } from "ethers";
 
-const API_BASE_URL = "http://localhost:3000";
+const API_BASE_URL =
+  "https://vaultguard-backend-production-4316.up.railway.app";
 const AddFriendForm = ({
   onAddFriend,
   setShowAddFriendForm,
@@ -35,35 +36,37 @@ const AddFriendForm = ({
   // ENS Resolution function using ethers.js
   const resolveEnsName = async () => {
     if (!ensName.trim()) return;
-    
+
     setIsResolvingEns(true);
     try {
       // Check if we have access to a provider (MetaMask, etc.)
       let provider;
-      
+
       if (window.ethereum) {
         // Use MetaMask provider
         provider = new ethers.BrowserProvider(window.ethereum);
       } else {
         // Fallback to a public provider for Sepolia
-        provider = new ethers.JsonRpcProvider('https://ethereum-sepolia-rpc.publicnode.com');
+        provider = new ethers.JsonRpcProvider(
+          "https://ethereum-sepolia-rpc.publicnode.com"
+        );
       }
 
-      console.log('Resolving ENS name:', ensName.trim());
-      
+      console.log("Resolving ENS name:", ensName.trim());
+
       // Resolve ENS name to address
       const resolvedAddress = await provider.resolveName(ensName.trim());
-      
+
       if (resolvedAddress) {
-        console.log('ENS resolved to address:', resolvedAddress);
-        handleInputChange('walletAddress', resolvedAddress);
-        setEnsName(''); // Clear ENS input after successful resolution
+        console.log("ENS resolved to address:", resolvedAddress);
+        handleInputChange("walletAddress", resolvedAddress);
+        setEnsName(""); // Clear ENS input after successful resolution
       } else {
-        throw new Error('ENS name not found or no address set');
+        throw new Error("ENS name not found or no address set");
       }
     } catch (error) {
-      console.error('ENS resolution error:', error);
-      setErrors(prev => ({ ...prev, ensName: error.message }));
+      console.error("ENS resolution error:", error);
+      setErrors((prev) => ({ ...prev, ensName: error.message }));
     } finally {
       setIsResolvingEns(false);
     }
@@ -292,7 +295,7 @@ const AddFriendForm = ({
                     setEnsName(e.target.value);
                     // Clear ENS error when user types
                     if (errors.ensName) {
-                      setErrors(prev => ({ ...prev, ensName: "" }));
+                      setErrors((prev) => ({ ...prev, ensName: "" }));
                     }
                   }}
                   className={
@@ -318,7 +321,8 @@ const AddFriendForm = ({
                 <p className="text-sm text-red-500">{errors.ensName}</p>
               )}
               <p className="text-xs text-muted-foreground">
-                Enter an ENS name and click "Resolve" to auto-fill the wallet address
+                Enter an ENS name and click "Resolve" to auto-fill the wallet
+                address
               </p>
             </div>
 

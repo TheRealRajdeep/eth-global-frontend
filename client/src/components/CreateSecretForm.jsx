@@ -20,7 +20,8 @@ import {
 import { Plus, FileText, Upload, Image, Users, X } from "lucide-react";
 import { useWallet } from "../hooks/useWallet";
 
-const API_BASE_URL = "http://localhost:3000";
+const API_BASE_URL =
+  "https://vaultguard-backend-production-4316.up.railway.app";
 
 // Get transaction from api
 async function submitStep1(params) {
@@ -92,7 +93,6 @@ async function submitStep2(unSignedTx, signer) {
     throw error;
   }
 }
-
 
 const CreateSecretForm = ({
   showCreateSecretForm,
@@ -206,11 +206,15 @@ const CreateSecretForm = ({
   };
 
   const handleFriendSelect = (friendWalletAddress) => {
-    const friend = friends.find((f) => f.friendWalletAddress === friendWalletAddress);
+    const friend = friends.find(
+      (f) => f.friendWalletAddress === friendWalletAddress
+    );
     if (
       friend &&
       formData.selectedFriends.length < 3 &&
-      !formData.selectedFriends.find((f) => f.friendWalletAddress === friend.friendWalletAddress)
+      !formData.selectedFriends.find(
+        (f) => f.friendWalletAddress === friend.friendWalletAddress
+      )
     ) {
       setFormData((prev) => ({
         ...prev,
@@ -225,7 +229,9 @@ const CreateSecretForm = ({
   const removeFriend = (friendWalletAddress) => {
     setFormData((prev) => ({
       ...prev,
-      selectedFriends: prev.selectedFriends.filter((f) => f.friendWalletAddress !== friendWalletAddress),
+      selectedFriends: prev.selectedFriends.filter(
+        (f) => f.friendWalletAddress !== friendWalletAddress
+      ),
     }));
   };
 
@@ -417,7 +423,8 @@ const CreateSecretForm = ({
                           key={friend.friendWalletAddress}
                           value={friend.friendWalletAddress}
                         >
-                          {friend.friendName} ({friend.friendWalletAddress.slice(0, 8)}...)
+                          {friend.friendName} (
+                          {friend.friendWalletAddress.slice(0, 8)}...)
                         </SelectItem>
                       ))}
                   </SelectContent>
@@ -481,35 +488,53 @@ const CreateSecretForm = ({
                   console.log("🚀 Starting will creation process...");
 
                   // Get nominees from selected friends
-                  const nominees = formData.selectedFriends.length > 0 
-                    ? formData.selectedFriends.map(friend => friend.friendWalletAddress)
-                    : [account]; // Use own address as fallback if no friends selected
+                  const nominees =
+                    formData.selectedFriends.length > 0
+                      ? formData.selectedFriends.map(
+                          (friend) => friend.friendWalletAddress
+                        )
+                      : [account]; // Use own address as fallback if no friends selected
 
                   console.log("📋 Selected nominees:", nominees);
 
                   // Convert interval to seconds
                   const intervalToSeconds = (interval) => {
                     switch (interval) {
-                      case "10s": return 10;
-                      case "30s": return 30;
-                      case "1m": return 60;
-                      case "30m": return 30 * 60;
-                      case "1h": return 60 * 60;
-                      case "1w": return 7 * 24 * 60 * 60;
-                      case "1mo": return 30 * 24 * 60 * 60;
-                      default: return 30; // Default to 30 seconds
+                      case "10s":
+                        return 10;
+                      case "30s":
+                        return 30;
+                      case "1m":
+                        return 60;
+                      case "30m":
+                        return 30 * 60;
+                      case "1h":
+                        return 60 * 60;
+                      case "1w":
+                        return 7 * 24 * 60 * 60;
+                      case "1mo":
+                        return 30 * 24 * 60 * 60;
+                      default:
+                        return 30; // Default to 30 seconds
                     }
                   };
 
                   const deadlineSeconds = intervalToSeconds(formData.interval);
-                  console.log("⏰ Selected interval:", formData.interval, "->", deadlineSeconds, "seconds");
+                  console.log(
+                    "⏰ Selected interval:",
+                    formData.interval,
+                    "->",
+                    deadlineSeconds,
+                    "seconds"
+                  );
 
                   // Step 1: Prepare transaction
                   const unSignedTx = await submitStep1({
                     userAddress: account,
                     nominees: nominees,
                     deadlineSeconds: deadlineSeconds,
-                    encryptedData: formData.description || formData.name || "secret-data",
+                    encryptedData:
+                      formData.description || formData.name || "secret-data",
                   });
 
                   // Step 2: Sign and send transaction (MetaMask will handle both)

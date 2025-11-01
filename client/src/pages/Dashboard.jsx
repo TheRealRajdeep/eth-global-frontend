@@ -5,7 +5,8 @@ import SecretsList from "../components/SecretsList";
 import FriendsList from "../components/FriendsList";
 import CreateSecretForm from "../components/CreateSecretForm";
 import { useWallet } from "../hooks/useWallet";
-const API_BASE_URL = "http://localhost:3000";
+const API_BASE_URL =
+  "https://vaultguard-backend-production-4316.up.railway.app";
 const Home = () => {
   // Wallet connection
   const { account, isConnected } = useWallet();
